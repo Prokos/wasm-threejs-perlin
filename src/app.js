@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import OrbitControls from 'lib/THREE.OrbitControls.js';
+import OrbitControls from 'lib/OrbitControls.js';
 
 import loadWebAssemblyModule from 'wasm/perlinNoise.wasm';
 
@@ -118,6 +118,9 @@ export default () => {
 		
 		window.addEventListener('resize', () => {
 			renderer.setSize(window.innerWidth, window.innerHeight);
+
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
 		});
 		
 		const controls = new OrbitControls(camera, renderer.domElement);
@@ -126,13 +129,14 @@ export default () => {
 		preCreateBoxes(width, height, scene);
 
 		const animate = () => {
-			
+			// exports._setSeed(performance.now() / 500);
+			// generateAndDrawMatrix(exports, scene);
+
 			renderer.render(scene, camera);
 			
 			requestAnimationFrame(animate);
 		};
 		
-		exports._setSeed(performance.now() / 500);
 		generateAndDrawMatrix(exports, scene);
 
 		requestAnimationFrame(animate);
